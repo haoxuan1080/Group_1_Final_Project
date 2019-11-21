@@ -6,7 +6,7 @@ use IEEE.numeric_std.all;
 entity pixelGenerator is
 	port(
 			clk, ROM_clk, rst_n, video_on, eof 				: in std_logic;
-			xx , yy, x_b, y_b										: in natural;
+			xx , yy, x_b, y_b													: in natural;
 			pixel_row, pixel_column						    : in std_logic_vector(9 downto 0);
 		
 			red_out, green_out, blue_out					: out std_logic_vector(7 downto 0)
@@ -58,9 +58,9 @@ begin
 		if (rst_n = '0')then
 			colorAddress <= color_white; 			
 		elsif (rising_edge(clk)) then
-			if ((pixel_row_int - xx < abs(10)) and (pixel_column_int -yy < abs(5))) then
+			if ((abs(pixel_row_int - xx) < 10) and (abs(pixel_column_int -yy) < 5)) then
 				colorAddress <= color_yellow;
-			elsif((pixel_row_int - x_b < 2) and (pixel_column_int -y_b < 2))then
+			elsif((abs(pixel_row_int - x_b) < 5) and (abs(pixel_column_int -y_b) < 2))then
 				colorAddress <= color_blue;
 			else
 				colorAddress <= color_cyan;
