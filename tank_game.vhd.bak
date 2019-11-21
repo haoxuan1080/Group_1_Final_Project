@@ -89,7 +89,7 @@ signal enable : std_logic; -- from keyboard
 signal speed : std_logic_vector(1 downto 0); -- from keyboard
 
 begin
-	enable <= '1'; -- input from the keyboard: shoot a bullet 
+	enable <= '0'; -- input from the keyboard: shoot a bullet 
 	speed <= "11"; -- input from the keyboard: tank speed
 	
 
@@ -105,11 +105,11 @@ begin
 	--draw2  : VGA_top_level
 	--	port map(clock, reset, 480 - x_bul_pos, 640 - y_bul_pos, not VGA_R, not VGA_G, not VGA_B, H_SYNC, V_SYNC, VGA_BLANK_control, VGA_Clock);
 	
---	score_counter: collision
---		port map(clock, reset, x_tank_pos, y_tank_pos, x_bul_pos, y_bul_pos, score_disp);
+	score_counter: collision
+		port map(clock, reset, x_tank_pos, y_tank_pos, x_bul_pos, y_bul_pos, score_disp);
 		
---	disp_score: leddcd 
---		port map(score_disp, disp_LED);
+	disp_score: leddcd 
+		port map(score_disp, disp_LED);
 	
 	clks: clock_divider
 		port map(clock, reset, speed, clk_tank, clk_bullet); 

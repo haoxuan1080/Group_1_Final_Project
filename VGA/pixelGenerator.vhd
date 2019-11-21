@@ -6,7 +6,7 @@ use IEEE.numeric_std.all;
 entity pixelGenerator is
 	port(
 			clk, ROM_clk, rst_n, video_on, eof 				: in std_logic;
-			xx , yy, x_b, y_b													: in natural;
+			xx , yy													: in natural;
 			pixel_row, pixel_column						    : in std_logic_vector(9 downto 0);
 		
 			red_out, green_out, blue_out					: out std_logic_vector(7 downto 0)
@@ -32,21 +32,26 @@ component colorDecoder is
 	);
 end component colorDecoder;
 
+
 signal pixel_row_int, pixel_column_int 				: natural;
 signal colorAddress : std_logic_vector (2 downto 0);
 signal color        : std_logic_vector (23 downto 0);
 
+
 begin
+
 --------------------------------------------------------------------------------------------
 	
 	red_out <= color(23 downto 16);
 	green_out <= color(15 downto 8);
 	blue_out <= color(7 downto 0);
 
+
 	pixel_row_int <= to_integer(unsigned(pixel_row));
 	pixel_column_int <= to_integer(unsigned(pixel_column));
 	
 --------------------------------------------------------------------------------------------	
+
 	colors : colorDecoder
 		port map(colorAddress,color);
 --------------------------------------------------------------------------------------------	
@@ -56,14 +61,13 @@ begin
 	begin
 	
 		if (rst_n = '0')then
-			colorAddress <= color_white; 			
+			colorAddress <= color_white; 
+			
 		elsif (rising_edge(clk)) then
-			if ((abs(pixel_row_int - yy) < 5) and (abs(pixel_column_int -xx) < 10)) then
-				colorAddress <= color_yellow;
-			elsif((abs(pixel_row_int - y_b) < 5) and (abs(pixel_column_int -x_b) < 2))then
-				colorAddress <= color_blue;
+			if (abs(pixel_row_int - xx) < 20 and (abs(pixel_column_int -yy) < 10)) then
+				colorAddress <= color_green;
 			else
-				colorAddress <= color_cyan;
+				colorAddress <= color_white;
 			end if;
 			
 		end if;
