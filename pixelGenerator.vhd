@@ -58,9 +58,9 @@ begin
 		if (rst_n = '0')then
 			colorAddress <= color_white; 			
 		elsif (rising_edge(clk)) then
-			if ((abs(pixel_row_int - xx) < 10) and (abs(pixel_column_int -yy) < 5)) then
+			if ((abs(pixel_row_int - yy) < 10) and (abs(pixel_column_int -xx) < 5)) then
 				colorAddress <= color_yellow;
-			elsif((abs(pixel_row_int - x_b) < 5) and (abs(pixel_column_int -y_b) < 2))then
+			elsif((abs(pixel_row_int - y_b) < 5) and (abs(pixel_column_int -x_b) < 2))then
 				colorAddress <= color_blue;
 			else
 				colorAddress <= color_cyan;
