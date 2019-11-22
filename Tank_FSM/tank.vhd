@@ -10,7 +10,7 @@ entity tank is
 			RESET											: in std_logic;
 			ENABLE										: in std_logic;
 			PAUSE    									: in std_logic;
-			Speed_up			    							: in std_logic;
+			Speed_up			    							: in std_logic; -- must be less than 2 enable( speed up two levels)
 			
 			x					: out std_logic_vector(9 downto 0);
 			y 					: out std_logic_vector(8 downto 0)
@@ -34,7 +34,7 @@ y <= std_logic_vector(y_reg);
 clock: process(ENABLE,RESET) is
 begin
 		if(RESET = '0')then
-			curr_state <= stop;
+			curr_state <= low_speed; -- start with low speed
 			x_reg <= to_unsigned(20,x_reg'length); 
 			y_reg <= to_unsigned(40,y_reg'length); 
 		elsif(ENABLE = '1')then
@@ -55,7 +55,7 @@ begin
 	case curr_state is
 		when low_speed =>
 			x_new <= x_reg + "1";
-			y_new <= y_reg + "1";
+			y_new <= y_reg;
 			if(PAUSE = '1')then
 				next_state <= stop;
 			elsif(Speed_up = '1')then
@@ -67,7 +67,7 @@ begin
 		
 		when medium_speed =>
 			x_new <= x_reg + "10";
-			y_new <= y_reg + "10";
+			y_new <= y_reg;
 			if(PAUSE = '1')then
 				next_state <= stop;
 			elsif(Speed_up = '1')then
@@ -78,7 +78,7 @@ begin
 		
 		when high_speed =>
 			x_new <= x_reg + "100";
-			y_new <= y_reg + "100";
+			y_new <= y_reg ;
 			if(PAUSE = '1')then
 				next_state <= stop;
 			elsif(Speed_up = '1')then
