@@ -4,7 +4,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 
-entity draw_a_tank is
+entity tank is
 	port(
 			clock_tank 										: in std_logic;
 			RESET_tank											: in std_logic;
@@ -12,17 +12,17 @@ entity draw_a_tank is
 			x, y 					: out natural
 
 		);
-end entity draw_a_tank;
+end entity tank;
 
 
-architecture behavioral of draw_a_tank is
+architecture behavioral of tank is
 signal x_new, y_new : natural;    --- default???????
 begin 
 
 x <= x_new;
 y <= y_new;
 
-	position: process(clock_tank,RESET_tank) is
+	position: process(clock_tank) is
 	begin
 
 		if(RESET_tank = '0')then

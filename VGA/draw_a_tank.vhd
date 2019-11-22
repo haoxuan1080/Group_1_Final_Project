@@ -17,32 +17,33 @@ end entity draw_a_tank;
 
 architecture behavioral of draw_a_tank is
 signal x_new, y_new : natural;
+signal counter1 : natural;
 begin 
 
 x <= x_new;
 y <= y_new;
 
-	position: process(clock_tank) is
-	variable counter1 : natural;
+	position: process(clock_tank,RESET_tank) is
+	--variable counter1 : natural;
 	begin
-		counter1 := 0;
+--		counter1 <= 0;
 
 		if(RESET_tank = '0')then
-			counter1 := 0;
+			counter1 <= 0;
 			x_new <= 60;
 			y_new <= 120;
 		elsif(rising_edge(clock_tank))then
 			if(counter1 < 1E6)then 
-				counter1 := counter1+1;
+				counter1 <= counter1+1;
 				x_new <= x_new;
 				y_new <= y_new;
 			elsif (x_new < 630) then
-				counter1 := 0;
-				x_new <= x_new + 10;
+				counter1 <= 0;
+				x_new <= x_new + 1;
 				y_new <= y_new;
 			else 
-				counter1 := 0;
-				x_new <= x_new;
+				counter1 <= 0;
+				x_new <= 240;
 				y_new <= y_new;
 			end if;
 		end if;

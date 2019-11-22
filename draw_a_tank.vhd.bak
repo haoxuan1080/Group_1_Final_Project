@@ -22,7 +22,7 @@ begin
 x <= x_new;
 y <= y_new;
 
-	position: process(clock_tank,RESET_tank) is
+	position: process(clock_tank) is
 	begin
 
 		if(RESET_tank = '0')then

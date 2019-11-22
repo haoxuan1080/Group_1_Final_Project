@@ -64,8 +64,7 @@ begin
 			colorAddress <= color_white; 
 			
 		elsif (rising_edge(clk)) then
-			if ((abs(pixel_row_int - yy) < 10) and (abs(pixel_column_int -xx) < 20)) then
-			--if ((pixel_row_int < 60) and (pixel_row_int > 50)  and (pixel_column_int > 100) and (pixel_column_int < 120)) then
+			if (abs(pixel_row_int - xx) < 20 and (abs(pixel_column_int -yy) < 10)) then
 				colorAddress <= color_green;
 			else
 				colorAddress <= color_white;
