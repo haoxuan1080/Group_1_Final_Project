@@ -5,6 +5,7 @@ use IEEE.numeric_std.all;
 
 
 entity tank is
+	generic(tank_select: std_logic:= '0' );
 	port(
 			--clock 										: in std_logic;
 			RESET											: in std_logic;
@@ -37,10 +38,16 @@ y <= std_logic_vector(y_reg);
 
 clock: process(ENABLE,RESET) is
 begin
-		if(RESET = '0')then
-			curr_state <= low_speed_right; -- start with low speed
+		if((RESET = '0') and (tank_select ='0')) then
+			curr_state <= low_speed_right;
 			x_reg <= to_unsigned(Tank_Width/2 ,x_reg'length); 
 			y_reg <= to_unsigned(Tank_Hight/2 ,y_reg'length); 
+			
+		elsif((RESET = '0') and (tank_select ='1')) then
+			curr_state <= low_speed_left;
+			x_reg <= to_unsigned(Screen_Width - Tank_Width/2 ,x_reg'length); 
+			y_reg <= to_unsigned(Screen_Width - Tank_Hight/2 ,y_reg'length); 
+			
 		elsif(ENABLE = '1')then
 			curr_state <= next_state;
 			x_reg <= x_new;
