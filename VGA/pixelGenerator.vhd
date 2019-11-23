@@ -2,12 +2,13 @@ library IEEE;
 
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
+use work.game_constant.all;
 
 entity pixelGenerator is
 	port(
 			clk, ROM_clk, rst_n, video_on, eof 				: in std_logic;
 	--		xx , yy													: in natural;
-			T1x, T1y, T2x, T2y, B1x, B1y, B
+			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 	
 			pixel_row, pixel_column						    : in std_logic_vector(9 downto 0);
 		
@@ -39,7 +40,31 @@ signal pixel_row_int, pixel_column_int 				: natural;
 signal colorAddress : std_logic_vector (2 downto 0);
 signal color        : std_logic_vector (23 downto 0);
 
+function InTank (row_int: integer; col_int: integer; T_x: std_logic_vector; T_y: std_logic_vector) return boolean is
+	variable IsTank: boolean;
+	variable T_x_int, T_y_int: integer;
+begin
+	IsTank:=False;
+	T_x_int:=to_integer(unsigned(T_x));
+	T_y_int:=to_integer(unsigned(T_y));
+	if abs(T_x_int-col_int)<Tank_width/2 and abs(T_y_int-row_int)<Tank_Hight/2 then
+		IsTank:=True;
+	end if;
+	return IsTank;
+end function InTank;
 
+function InBullet (row_int: integer; col_int: integer; B_x: std_logic_vector; B_y: std_logic_vector) return boolean is
+	variable IsB: boolean;
+	variable B_x_int, B_y_int: integer;
+begin
+	IsB:=False;
+	B_x_int:=to_integer(unsigned(B_x));
+	B_y_int:=to_integer(unsigned(B_y));
+	if (row_int-B_y_int)*(row_int-B_y_int)+(col_int-B_x_int)*(col_int-B_x_int)<Bullet_Radius*Bullet_Radius then
+                IsB:=True;
+        end if;
+	return IsB;
+end function InBullet;
 begin
 
 --------------------------------------------------------------------------------------------
@@ -66,13 +91,15 @@ begin
 			colorAddress <= color_white; 
 			
 		elsif (rising_edge(clk)) then
-			if ((abs(pixel_row_int - yy) < 10) and (abs(pixel_column_int -xx) < 20)) then
-			--if ((pixel_row_int < 60) and (pixel_row_int > 50)  and (pixel_column_int > 100) and (pixel_column_int < 120)) then
-				colorAddress <= color_green;
-			else
-				colorAddress <= color_white;
-			end if;
-			
+			if (InTank(pixel_row_int, pixel_column_int, T1x, T1y)) then
+				colorAddress<=color_red;
+			elsif(InTank(pixel_row_int, pixel_column_int, T2x, T2y)) then
+				colorAddress<=color_blue;
+			elsif(InBullet(pixel_row_int, pixel_column_int, B1x, B1y)) then
+				colorAddress<=color_yellow;
+			elsif(InBullet(pixel_row_int, pixel_column_int, B2x, B2y)) then
+				colorAddress<=color_yellow;
+			end if;	
 		end if;
 		
 	end process pixelDraw;	
