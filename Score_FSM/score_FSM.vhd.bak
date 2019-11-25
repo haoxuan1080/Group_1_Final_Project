@@ -1,0 +1,19 @@
+library IEEE;
+use work.game_constant.all;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+
+entity score_FSM is
+	generic(tank_select: std_logic:= '0' );
+	port(
+			--clock 										: in std_logic;
+			RESET											: in std_logic;
+			ENABLE										: in std_logic;
+			PAUSE    									: in std_logic;
+			Speed_up			    							: in std_logic; -- must be less than 2 enable( speed up two levels)
+			
+			x					: out std_logic_vector(9 downto 0);
+			y 					: out std_logic_vector(9 downto 0)
+		);
+end entity score_FSM;		
