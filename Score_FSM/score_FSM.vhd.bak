@@ -1,19 +1,82 @@
 library IEEE;
-use work.game_constant.all;
+--use work.game_constant.all;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 
 entity score_FSM is
-	generic(tank_select: std_logic:= '0' );
+
 	port(
 			--clock 										: in std_logic;
 			RESET											: in std_logic;
-			ENABLE										: in std_logic;
-			PAUSE    									: in std_logic;
-			Speed_up			    							: in std_logic; -- must be less than 2 enable( speed up two levels)
+			ENABLE											: in std_logic;
+			trigger 										: in std_logic;
 			
-			x					: out std_logic_vector(9 downto 0);
-			y 					: out std_logic_vector(9 downto 0)
+			score    									: out std_logic_vector(1 downto 0);		
+			PAUSE    									: out std_logic
 		);
-end entity score_FSM;		
+end entity score_FSM;
+
+		
+architecture behavioral of score_FSM is
+
+--type state_type is(score_0, score_1, score_2, score_3 );
+--signal curr_state, next_state: state_type;
+
+signal curr_state, next_state: std_logic_vector(1 downto 0);	
+signal pause_reg,pause_new: std_logic;
+begin
+
+score <= curr_state;
+pause <= pause_reg;
+
+clock: process(ENABLE,RESET) is
+begin
+		if(RESET = '0') then
+			curr_state <= "00";
+			pause_reg <= '0';
+		
+		elsif(rising_edge(ENABLE))then
+			curr_state <= next_state;
+			pause_reg <= pause_new;
+		end if;
+		
+end process;
+	
+combinational : process(curr_state, trigger) is
+begin
+	next_state <= "00";
+	pause_new <= '0';
+
+	case curr_state is	
+		when "00" =>
+			pause_new <= '0';
+			if (trigger = '1')then
+				next_state <= "01";
+			else 
+				next_state <= curr_state;
+			end if;
+		
+		when "01" => 
+			pause_new <= '0';
+			if (trigger = '1')then
+				next_state <= "10";
+			else 
+				next_state <= curr_state;
+			end if;
+
+		when "10" => 
+			pause_new <= '0';
+			if (trigger = '1')then
+				next_state <= "11";
+			else 
+				next_state <= curr_state;
+			end if;
+
+		when "11" => 
+			pause_new <= '1';
+			next_state <= curr_state;
+
+end case;
+end process;
+end architecture behavioral;

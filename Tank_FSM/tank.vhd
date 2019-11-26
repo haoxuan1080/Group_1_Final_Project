@@ -7,7 +7,7 @@ use IEEE.numeric_std.all;
 entity tank is
 	generic(tank_select: std_logic:= '0' );
 	port(
-			--clock 										: in std_logic;
+--			clock 										: in std_logic;
 			RESET											: in std_logic;
 			ENABLE										: in std_logic;
 			PAUSE    									: in std_logic;
@@ -36,7 +36,7 @@ begin
 x <= std_logic_vector(x_reg);
 y <= std_logic_vector(y_reg);
 
-clock: process(ENABLE,RESET) is
+sequential: process(ENABLE,RESET) is
 begin
 		if((RESET = '0') and (tank_select ='0')) then
 			curr_state <= low_speed_right;
@@ -48,7 +48,8 @@ begin
 			x_reg <= to_unsigned(Screen_Width - Tank_Width/2 ,x_reg'length); 
 			y_reg <= to_unsigned(Screen_Width - Tank_Hight/2 ,y_reg'length); 
 			
-		elsif(ENABLE = '1')then
+--		elsif(rising_edge(clock) and (ENABLE = '1'))then
+		elsif(rising_edge(ENABLE))then
 			curr_state <= next_state;
 			x_reg <= x_new;
 			y_reg <= y_new;			
