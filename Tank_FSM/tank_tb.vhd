@@ -9,8 +9,8 @@ end tank_tb;
 architecture structural of tank_tb is
 component tank is
 	port(
-			--clock 										: in std_logic;
-			RESET											: in std_logic;
+			clock 										: in std_logic;
+			RESET										: in std_logic;
 			ENABLE										: in std_logic;
 			PAUSE    									: in std_logic;
 			Speed_up			    							: in std_logic;
@@ -20,25 +20,34 @@ component tank is
 		);
 end component tank;
 
-signal rst, en, stop, speed: std_logic;
+signal clk, rst, en, stop, speed: std_logic;
 signal x_wave : std_logic_vector(9 downto 0);
 signal y_wave : std_logic_vector(9 downto 0);    
 
 begin
-	dut: tank port map (rst, en, stop, speed, x_wave, y_wave);
+	dut: tank port map ( clk, rst, en, stop, speed, x_wave, y_wave);
+
+	clk_proc: process 
+	begin
+		clk<='1';
+		wait for 5 ns;
+		clk<='0';
+		wait for 5 ns;
+	end process;
+
 
 	en_proc: process 
 	begin
 		en<='0';
-		wait for 50 ns;
+		wait for 100 ns;
 		en<='1';
-		wait for 5 ns;
+		wait for 10 ns;
 	end process;
 
 	rst_proc: process
 	begin
 		rst<='0';
-		wait for 21 ns;
+		wait for 18 ns;
 		rst<='1';
 		wait;
 	end process;
@@ -54,17 +63,17 @@ begin
 	speed_proc: process
 	begin
 		speed<='0';
-		wait for 150 ns;
-		speed<='1';
-		wait for 20 ns;
-		speed<='0';
 		wait for 200 ns;
 		speed<='1';
-		wait for 20 ns;
+		wait for 10 ns;
 		speed<='0';
-		wait for 250 ns;
+		wait for 55 ns;
 		speed<='1';
-		wait for 150 ns;
+		wait for 10 ns;
+		speed<='0';
+		wait for 120 ns;
+		speed<='1';
+		wait for 100 ns;
 		speed<='0';
 		wait;
 	end process;
