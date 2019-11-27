@@ -28,12 +28,12 @@ begin
 			row<=unsigned(Trow_in);
 			col<=unsigned(Tcol_in);
 			curr_state<=idle;
-		elsif (rising_edge(clk)) then
-			if(en='1') then
+		elsif (rising_edge(clk) and en='1') then
+			--if(en='1') then
 				row<=row_c;
 				col<=col_c;
 				curr_state<=next_state;
-			end if;
+			--end if;
 		end if;
 	end process;
 

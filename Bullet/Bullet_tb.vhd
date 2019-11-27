@@ -35,6 +35,14 @@ begin
 		en<='0';
 		wait for 100 ns;
 		en<='1';
+wait for 5 ns;
+en<='0';
+wait for 5 ns;
+en<='1';
+wait for 50 ns;
+en<='0';
+wait for 50 ns;
+en<='1';
 		wait for 500 ns;
 		--en<='0';
 		wait for 100 ns;
