@@ -16,13 +16,13 @@ architecture dataflow of colorDecoder is
 begin
 
 q <= "111111110000000000000000" when address = "000" else
-		   	   "000000001111111100000000" when address = "001" else 
-		   	   "000000000000000011111111" when address = "010" else
-		   	   "111111111111111100000000" when address = "011" else
-		   	   "111111110000000011111111" when address = "100" else
-		   	   "000000001111111111111111" when address = "101" else
-		   	   "000000000000000000000000" when address = "110" else
-		   	   "111111111111111111111111" when address = "111" else
-			      "000000000000000000000000";
+	  "000000001111111100000000" when address = "001" else 
+	  "000000000000000011111111" when address = "010" else
+     "111111111111111100000000" when address = "011" else
+     "111111110000000011111111" when address = "100" else
+     "000000001111111111111111" when address = "101" else
+     "000000000000000000000000" when address = "110" else
+     "111111111111111111111111" when address = "111" else
+     "000000000000000000000000";
 
 end architecture dataflow;

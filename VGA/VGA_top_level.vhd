@@ -83,21 +83,21 @@ begin
 			T2y<=std_logic_vector(to_unsigned(300, 10));
 			
 			B1x<=std_logic_vector(to_unsigned(0, 10));
-			B1y<=std_logic_vector(to_unsigned(100, 10));
+			B1y<=std_logic_vector(to_unsigned(150, 10));
 			
 			B2x<=std_logic_vector(to_unsigned(640, 10));
-			B2y<=std_logic_vector(to_unsigned(300, 10));
+			B2y<=std_logic_vector(to_unsigned(250, 10));
 		elsif (rising_edge(CLOCK_50 )) then
 			if(en='1') then
 				if(T1x=std_logic_vector(to_unsigned(640, 10))) then
 					T1x<=std_logic_vector(to_unsigned(0, 10));
 				else 
-					T1x<=std_logic_vector(unsigned(T1x)+10);
+					T1x<=std_logic_vector(unsigned(T1x)+2);
 				end if;
 				if(T2x=std_logic_vector(to_unsigned(640, 10))) then
 					T2x<=std_logic_vector(to_unsigned(0, 10));
 				else 
-					T2x<=std_logic_vector(unsigned(T1x)+10);
+					T2x<=std_logic_vector(unsigned(T1x)+2);
 				end if;
 				B1x<=T1x;
 				B2x<=T2x;

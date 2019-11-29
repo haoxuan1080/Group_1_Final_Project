@@ -77,7 +77,7 @@ begin
 --------------------------------------------------------------------------------------------	
 
 	colors : colorDecoder
-		port map(colorAddress,color);
+		port map(colorAddress, color);
 --------------------------------------------------------------------------------------------	
 
 	pixelDraw : process(clk, rst_n) is
@@ -89,15 +89,15 @@ begin
 			
 		elsif (rising_edge(clk)) then
 			if (InTank(pixel_row_int, pixel_column_int, T1x, T1y)) then
-				colorAddress<=color_red;
+				colorAddress<=color_magenta;
 			elsif(InTank(pixel_row_int, pixel_column_int, T2x, T2y)) then
-				colorAddress<=color_blue;
+				colorAddress<=color_cyan;
 			elsif(InBullet(pixel_row_int, pixel_column_int, B1x, B1y)) then
-				colorAddress<=color_yellow;
-			elsif(InBullet(pixel_row_int, pixel_column_int, B2x, B2y)) then
-				colorAddress<=color_yellow;
-			else
 				colorAddress<=color_black;
+			elsif(InBullet(pixel_row_int, pixel_column_int, B2x, B2y)) then
+				colorAddress<=color_white;
+			else
+				colorAddress<=color_red;
 			end if;	
 		end if;
 		

@@ -13,7 +13,7 @@ entity freq_div is
 end freq_div;
 
 architecture behavioral of freq_div is
-	signal counter: unsigned (21 downto 0);
+	signal counter: unsigned (20 downto 0);
 	signal en: std_logic;
 begin
 	en_out<=en;
