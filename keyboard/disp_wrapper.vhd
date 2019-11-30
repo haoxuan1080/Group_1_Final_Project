@@ -1,0 +1,54 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity disp_wrapper is
+
+port(
+keyboard_clk, keyboard_data, clock_50MHz,reset : in std_logic;--, read : in std_logic;
+
+HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7 : out std_logic_vector(6 downto 0)
+
+);
+
+end entity disp_wrapper;
+
+
+architecture structural of disp_wrapper is
+component ps2 is
+	port( 	keyboard_clk, keyboard_data, clock_50MHz ,
+			reset : in std_logic;--, read : in std_logic;
+			scan_code : out std_logic_vector( 7 downto 0 );
+			scan_readyo : out std_logic;
+			hist3 : out std_logic_vector(7 downto 0);
+			hist2 : out std_logic_vector(7 downto 0);
+			hist1 : out std_logic_vector(7 downto 0);
+			hist0 : out std_logic_vector(7 downto 0)
+		);
+end component ps2;
+
+component leddcd is
+	port(
+		 data_in : in std_logic_vector(3 downto 0);
+		 segments_out : out std_logic_vector(6 downto 0)
+		);
+end component leddcd;		
+
+signal ready : std_logic;
+signal curr_code, disp_0, disp_1, disp_2, disp_3: std_logic_vector(7 downto 0);
+
+begin 
+
+key_out: ps2 port map(keyboard_clk, keyboard_data, clock_50MHz,reset, curr_code, ready, disp_0, disp_1, disp_2, disp_3);
+
+hex_out0: leddcd port map(disp_0(3 downto 0), HEX0);
+hex_out1: leddcd port map(disp_0(7 downto 4), HEX1);
+hex_out2: leddcd port map(disp_1(3 downto 0), HEX2);
+hex_out3: leddcd port map(disp_1(7 downto 4), HEX3);
+hex_out4: leddcd port map(disp_2(3 downto 0), HEX4);
+hex_out5: leddcd port map(disp_2(7 downto 4), HEX5);
+hex_out6: leddcd port map(disp_3(3 downto 0), HEX6);
+hex_out7: leddcd port map(disp_3(7 downto 4), HEX7);
+
+end architecture;
