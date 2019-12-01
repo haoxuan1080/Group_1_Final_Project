@@ -22,10 +22,10 @@ component ps2 is
 			
 			scan_code : out std_logic_vector( 7 downto 0 );
 			scan_readyo : out std_logic;
-			hist3 : out std_logic_vector(7 downto 0);
-			hist2 : out std_logic_vector(7 downto 0);
-			hist1 : out std_logic_vector(7 downto 0);
-			hist0 : out std_logic_vector(7 downto 0)
+--			hist3 : out std_logic_vector(7 downto 0);
+--			hist2 : out std_logic_vector(7 downto 0);
+--			hist1 : out std_logic_vector(7 downto 0);
+--			hist0 : out std_logic_vector(7 downto 0)
 		);
 end component ps2;
 
@@ -41,7 +41,7 @@ signal curr_code, disp_0, disp_1, disp_2, disp_3: std_logic_vector(7 downto 0);
 
 begin 
 
-key_out: ps2 port map(keyboard_clk, keyboard_data, clock_50MHz,reset, curr_code, ready, disp_3, disp_2, disp_1, disp_0);
+key_out: ps2 port map(keyboard_clk, keyboard_data, clock_50MHz,reset, curr_code, ready, disp_0, disp_1, disp_2, disp_3);
 
 hex_out0: leddcd port map(disp_0(3 downto 0), HEX0);
 hex_out1: leddcd port map(disp_0(7 downto 4), HEX1);
