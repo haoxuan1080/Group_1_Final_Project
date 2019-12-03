@@ -18,6 +18,10 @@ architecture behavioral of WinDec is
 	signal game_state, game_state_c: std_logic_vector (1 downto 0);
 	signal pause, pause_c: std_logic;	
 begin
+
+	pause_out<=pause;
+	game_state_out<=game_state;
+
 	sync_proc: process (clk, rst_n)
 	begin
 		if(rst_n='0') then
@@ -31,31 +35,31 @@ begin
 		end if;		
 	end process;
 
-	comb_proc: process (current_state, game_state, pause)
+	comb_proc: process (current_state, P1Score, P2Score)
 	begin
 		case current_state is
 			when In_proc =>
 				if (P1Score="11") then
 					next_state<=P1Win;
-					game_state<="01";
-					pause<='1';
+					game_state_c<="01";
+					pause_c<='1';
 				elsif (P2Score="11") then
 					next_state<=P2Win;
-					game_state<="10";
-					pause<='1';
+					game_state_c<="10";
+					pause_c<='1';
 				else
 					next_state<=In_proc;
-					game_state<="00";
-					pause<='0';
+					game_state_c<="00";
+					pause_c<='0';
 				end if;
 			when P1Win => 
 				next_state<=P1Win;
-				game_state<="01";
-				pause<='1';
+				game_state_c<="01";
+				pause_c<='1';
 			when P2Win =>
 				next_state<=P2Win;
-				game_state<="10";
-				pause<='1';
+				game_state_c<="10";
+				pause_c<='1';
 		end case;
 	end process;
 end behavioral;
