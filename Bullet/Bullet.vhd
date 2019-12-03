@@ -8,6 +8,7 @@ entity bullet is
 		clk, rst_n, en: in std_logic;
    		shoot: in std_logic;
 		collision: in std_logic;
+		pause: in std_logic;
 		Trow_in, Tcol_in: in std_logic_vector (9 downto 0);
 		row_out, col_out: out std_logic_vector (9 downto 0)
 	);
@@ -51,11 +52,17 @@ begin
 				if(shoot='1') then
 					next_state<=fired;
 				end if;
+				if (pause='1') then
+					next_state<=not_fired;
+				end if;
 			when fired => 
 				row_c<=row+speed;
 				col_c<=col;
 				next_state<=fired;
 				if(row>=Screen_Height or collision='1') then
+					next_state<=not_fired;
+				end if;
+				if (pause='1') then
 					next_state<=not_fired;
 				end if;
 		end case;

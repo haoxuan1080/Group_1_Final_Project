@@ -13,6 +13,7 @@ architecture structural of Bullet_tb is
 		clk, rst_n, en: in std_logic;
    		shoot: in std_logic;
 		collision: in std_logic;
+		pause: in std_logic;
 		Trow_in, Tcol_in: in std_logic_vector (9 downto 0);
 		row_out, col_out: out std_logic_vector (9 downto 0)
 	);
@@ -20,8 +21,9 @@ architecture structural of Bullet_tb is
 	signal clk, rst_n, en, shoot, collision: std_logic;
 	signal Trow_in, Tcol_in: std_logic_vector (9 downto 0);
 	signal row_out, col_out: std_logic_vector (9 downto 0);
+	signal pause: std_logic;
 begin
-	dut: bullet port map (clk, rst_n, en, shoot, collision, Trow_in, Tcol_in, row_out, col_out);
+	dut: bullet port map (clk, rst_n, en, shoot, collision, pause, Trow_in, Tcol_in, row_out, col_out);
 	clk_proc: process 
 	begin
 		clk<='1';
@@ -33,6 +35,7 @@ begin
 	en_proc: process
 	begin
 		en<='0';
+		pause<='0';
 		wait for 100 ns;
 		en<='1';
 wait for 5 ns;
