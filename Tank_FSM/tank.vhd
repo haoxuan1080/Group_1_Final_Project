@@ -5,7 +5,6 @@ use IEEE.numeric_std.all;
 
 
 entity tank is
---	generic(tank_select: std_logic:= '0' );
 	port(
 			clock 										: in std_logic;
 			RESET											: in std_logic;
@@ -16,9 +15,6 @@ entity tank is
 			x					: out std_logic_vector(9 downto 0);
 			y 					: out std_logic_vector(9 downto 0)
 		);
-constant speed1: unsigned := "1";	
-constant speed2: unsigned := "10";
-constant speed3: unsigned := "100";	
 
 end entity tank;
 
@@ -29,8 +25,11 @@ type state_type is (stop, low_speed_left, medium_speed_left, high_speed_left, lo
 signal curr_state, next_state: state_type;
 
 signal x_reg, x_new :unsigned(9 downto 0);
-signal y_reg, y_new : unsigned(9 downto 0);    
+signal y_reg, y_new : unsigned(9 downto 0);  
 
+constant speed1: unsigned := "1";	
+constant speed2: unsigned := "10";
+constant speed3: unsigned := "100";	  
 
 begin 
 x <= std_logic_vector(x_reg);

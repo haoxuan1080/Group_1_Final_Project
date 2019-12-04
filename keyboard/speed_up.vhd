@@ -6,8 +6,9 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity speed_up is
 
 port(
-keyboard_clk, keyboard_data, clock_50MHz,reset : in std_logic;--, read : in std_logic;
-ready :out std_logic;
+keyboard_clk, keyboard_data, clock_50MHz, reset : in std_logic;--, read : in std_logic;
+--ready :out std_logic;
+shoot :out std_logic_vector(1 downto 0);
 speed :out std_logic_vector(1 downto 0)
 
 );
@@ -30,7 +31,7 @@ end component ps2;
 
 
 --signal ready : std_logic;
-signal speed_up : std_logic_vector(1 downto 0);
+signal speed_up, shoot_out : std_logic_vector(1 downto 0);
 signal curr_code, disp_0, disp_1, disp_2, disp_3: std_logic_vector(7 downto 0);
 
 begin 
@@ -50,5 +51,20 @@ else
 	speed_up <= "00";
 end if;
 end process;
+
+shoot <= shoot_out;
+
+shoot_proc: process(curr_code)is --keep until next code in
+begin
+shoot_out <= "00";
+if(curr_code = X"1C")then --A:: tank1
+	shoot_out <= "01";
+elsif (curr_code = X"52")then --"/ : 4A: tank2
+	shoot_out <= "10";
+else
+	shoot_out <= "00";
+end if;
+end process;
+
 
 end architecture;

@@ -7,6 +7,8 @@ entity VGA_test is
 	port(
 			CLOCK_50 										: in std_logic;
 			RESET_N											: in std_logic;
+			
+			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 	
 			--VGA 
 			VGA_RED, VGA_GREEN, VGA_BLUE 					: out std_logic_vector(7 downto 0); 
@@ -73,36 +75,36 @@ begin
 
 	VGA_CLK <= VGA_clk_int;
 
-	proc: process(CLOCK_50 , RESET_N	) 
-	begin
-		if (RESET_N	= '0') then
-			T1x<=std_logic_vector(to_unsigned(0, 10));
-			T1y<=std_logic_vector(to_unsigned(100, 10));
-			
-			T2x<=std_logic_vector(to_unsigned(640, 10));
-			T2y<=std_logic_vector(to_unsigned(300, 10));
-			
-			B1x<=std_logic_vector(to_unsigned(0, 10));
-			B1y<=std_logic_vector(to_unsigned(150, 10));
-			
-			B2x<=std_logic_vector(to_unsigned(640, 10));
-			B2y<=std_logic_vector(to_unsigned(250, 10));
-		elsif (rising_edge(CLOCK_50 )) then
-			if(en='1') then
-				if(T1x=std_logic_vector(to_unsigned(640, 10))) then
-					T1x<=std_logic_vector(to_unsigned(0, 10));
-				else 
-					T1x<=std_logic_vector(unsigned(T1x)+2);
-				end if;
-				if(T2x=std_logic_vector(to_unsigned(640, 10))) then
-					T2x<=std_logic_vector(to_unsigned(0, 10));
-				else 
-					T2x<=std_logic_vector(unsigned(T1x)+2);
-				end if;
-				B1x<=T1x;
-				B2x<=T2x;
-			end if;
-		end if;
+--	proc: process(CLOCK_50 , RESET_N	) 
+--	begin
+--		if (RESET_N	= '0') then
+--			T1x<=std_logic_vector(to_unsigned(0, 10));
+--			T1y<=std_logic_vector(to_unsigned(100, 10));
+--			
+--			T2x<=std_logic_vector(to_unsigned(640, 10));
+--			T2y<=std_logic_vector(to_unsigned(300, 10));
+--			
+--			B1x<=std_logic_vector(to_unsigned(0, 10));
+--			B1y<=std_logic_vector(to_unsigned(150, 10));
+--			
+--			B2x<=std_logic_vector(to_unsigned(640, 10));
+--			B2y<=std_logic_vector(to_unsigned(250, 10));
+--		elsif (rising_edge(CLOCK_50 )) then
+--			if(en='1') then
+--				if(T1x=std_logic_vector(to_unsigned(640, 10))) then
+--					T1x<=std_logic_vector(to_unsigned(0, 10));
+--				else 
+--					T1x<=std_logic_vector(unsigned(T1x)+2);
+--				end if;
+--				if(T2x=std_logic_vector(to_unsigned(640, 10))) then
+--					T2x<=std_logic_vector(to_unsigned(0, 10));
+--				else 
+--					T2x<=std_logic_vector(unsigned(T1x)+2);
+--				end if;
+--				B1x<=T1x;
+--				B2x<=T2x;
+--			end if;
+--		end if;
 
 	end process;
 

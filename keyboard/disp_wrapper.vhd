@@ -7,7 +7,7 @@ entity disp_wrapper is
 
 port(
 keyboard_clk, keyboard_data, clock_50MHz,reset : in std_logic;--, read : in std_logic;
-
+ready : out std_logic;
 HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7 : out std_logic_vector(6 downto 0)
 
 );
@@ -36,12 +36,12 @@ component leddcd is
 		);
 end component leddcd;		
 
-signal ready : std_logic;
+--signal ready : std_logic;
 signal curr_code, disp_0, disp_1, disp_2, disp_3: std_logic_vector(7 downto 0);
 
 begin 
 
-key_out: ps2 port map(keyboard_clk, keyboard_data, clock_50MHz,reset, curr_code, ready, disp_3, disp_2, disp_1, disp_0);
+key_out: ps2 port map(keyboard_clk, keyboard_data, clock_50MHz,reset, curr_code,ready, disp_3, disp_2, disp_1, disp_0);
 
 hex_out0: leddcd port map(disp_0(3 downto 0), HEX0);
 hex_out1: leddcd port map(disp_0(7 downto 4), HEX1);
