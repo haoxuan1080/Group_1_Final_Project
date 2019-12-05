@@ -1,0 +1,191 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+use work.Game_constant.all;
+
+entity tank_top_level is
+	port(
+		clock: in std_logic;
+    	reset: in std_logic;	
+		keyboard_clk, keyboard_data: in std_logic;
+
+		
+		VGA_RED, VGA_GREEN, VGA_BLUE 					: out std_logic_vector(7 downto 0); 
+		HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK		: out std_logic
+);
+end entity tank_top_level;
+
+architecture structual of tank_top_level is
+
+component freq_div is
+	port(
+		clk: in std_logic;
+    	rst_n: in std_logic;
+		en_out: out std_logic	
+	);
+end component freq_div;
+
+component tank is
+	port(
+			clock 										: in std_logic;
+			RESET											: in std_logic;
+			ENABLE										: in std_logic;
+			PAUSE    									: in std_logic;
+			Speed_up			    						: in std_logic; -- must be less than 2 enable( speed up two levels)	
+			x					: out std_logic_vector(9 downto 0);
+			y 					: out std_logic_vector(9 downto 0)
+		);
+
+end component tank;
+
+component bullet is
+	port (
+		clk, rst_n, en : in std_logic;
+   	shoot				: in std_logic;
+		collision		: in std_logic;
+		PAUSE				: in std_logic; -- add a port 
+		Trow_in, Tcol_in: in std_logic_vector (9 downto 0);
+		row_out, col_out: out std_logic_vector (9 downto 0)
+	);
+end component bullet;
+
+component collision is
+	port(
+			clock	 									   : in std_logic;
+			RESET_sys									: in std_logic;
+			x_tank, y_tank 					      : in std_logic_vector(9 downto 0);
+			x_bullet, y_bullet 					   : in std_logic_vector(9 downto 0);
+			trigger										: out  std_logic
+		);
+end component collision;
+
+component score_FSM is
+
+	port(
+			clock 										: in std_logic;
+			RESET											: in std_logic;
+			trigger 										: in std_logic;
+			
+			score    									: out std_logic_vector(1 downto 0)	
+--			PAUSE    									: out std_logic
+		);
+end component score_FSM;
+
+component WinDec is
+   port(
+		clk, rst_n: in std_logic;
+		P1Score, P2Score: in std_logic_vector (1 downto 0);	
+		pause_out: out std_logic;
+		game_state_out: out std_logic_vector (1 downto 0)
+	);
+end component WinDec;
+
+component VGA_test is
+	port(
+			CLOCK_50 										: in std_logic;
+			RESET_N											: in std_logic;
+			
+			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y			: in std_logic_vector (9 downto 0);
+	
+			--VGA 
+			VGA_RED, VGA_GREEN, VGA_BLUE 					: out std_logic_vector(7 downto 0); 
+			HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK		: out std_logic
+
+		);
+end component VGA_test;
+
+component de2lcd IS
+	PORT(
+		reset, clk_50Mhz				: IN	STD_LOGIC;
+		game_state						: IN 	std_logic_vector(1 downto 0);
+		LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED		: OUT	STD_LOGIC;
+		LCD_RW						: BUFFER STD_LOGIC;
+		DATA_BUS				: INOUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END component de2lcd;
+
+component keyboard_out is
+	port(
+	keyboard_clk, keyboard_data, clock_50MHz, reset, enable : in std_logic;--, read : in std_logic;
+--	ready :out std_logic;
+	speed_up1, speed_up2, shoot_out1, shoot_out2 : out std_logic
+	);
+end component keyboard_out;
+
+component leddcd is 
+		port(
+		data_in : in std_logic_vector(3 downto 0);
+		segments_out : out std_logic_vector(6 downto 0)
+		);
+	end component;
+
+	signal enable, trig1, trig2, pause, speed1, speed2, shoot1, shoot2 : std_logic;
+	signal score1, score2, game_state, shoot_key, speed_key: std_logic_vector(1 downto 0);	
+	signal x_t1, x_t2, y_t1, y_t2, x_b1, x_b2, y_b1, y_b2, x_t2_std, y_t2_std, x_b2_std, y_b2_std: std_logic_vector(9 downto 0);
+	signal x_t2_unsigned, y_t2_unsigned, x_b2_unsigned, y_b2_unsigned: unsigned (9 downto 0);
+	
+begin
+
+new_freq: freq_div port map(clock, reset, enable);
+tank1: tank port map(clock, reset, enable, pause, speed1, x_t1, y_t1);
+tank2: tank port map(clock, reset, enable, pause, speed2, x_t2_std, y_t2_std);
+bullet1: bullet port map(clock, reset, enable, shoot1, trig1, pause, x_t1, y_t1, x_b1, y_b1);
+bullet2: bullet port map(clock, reset, enable, shoot2, trig2, pause, x_t2, y_t2, x_b2, y_b2);
+collision_hit2: collision port map(clock, reset, x_t2, y_t2, x_b1, y_b1, trig1);
+collision_hit1: collision port map(clock, reset, x_t1, y_t1, x_b2, y_b2, trig2);
+score_1: score_FSM port map(clock, reset, trig1, score1);
+score_2: score_FSM port map(clock, reset, trig2, score2);
+winner: WinDec port map(clock, reset, score1, score2, pause, game_state);
+VGA_disp: VGA_test port map(clock, reset, x_t1, y_t1, x_t2, y_t2, x_b1, y_b1, x_b2, y_b2, VGA_RED, VGA_GREEN, VGA_BLUE, HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK );
+keyboard_control : keyboard_out port map(keyboard_clk, keyboard_data, clock, reset, speed1,speed2,shoot1, shoot2);
+--led_disp1: leddcd port map(score1, segments_out1);
+--led_disp2: leddcd port map(score2, segments_out2);
+--lcd_disp: de2lcd port map(reset, clock, game_state, LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED, LCD_RW, DATA_BUS);
+
+x_t2 <= std_logic_vector(x_t2_unsigned);
+y_t2 <= std_logic_vector(y_t2_unsigned);
+--x_b2 <= std_logic_vector(x_b2_unsigned);
+--y_b2 <= std_logic_vector(y_b2_unsigned);
+
+tank2_position: process(x_t2_std, y_t2_std)
+begin	
+	x_t2_unsigned <= to_unsigned(Screen_Width - to_integer(unsigned(x_t2_std)),x_t2_unsigned'length);
+	y_t2_unsigned <= to_unsigned(Screen_Height - to_integer(unsigned(y_t2_std)),y_t2_unsigned'length);
+--	x_b2_unsigned <= unsigned(x_b2_std);
+--	y_b2_unsigned <= to_unsigned(480 - to_integer(unsigned(y_b2_std)),y_b2_unsigned'length);
+end process;
+
+
+
+end architecture structual;
+
+
+
+
+
+--	speed_tank: process(clock)
+--	begin
+--	if(speed_key = "01")then
+--		speed1<= '1';
+--		speed2<= '0';
+--	elsif(speed_key = "10")then
+--		speed1<= '0';
+--		speed2<= '1';
+--	else 
+--		speed1<= '0';
+--		speed2<= '0';
+--	end if;
+--	end process;
+--	
+--	shoot_bullet: process(clock)
+--	begin
+--	if(shoot_key = "01")then
+--		shoot1<= '1';
+--		shoot2<= '0';
+--	elsif(shoot_key = "10")then
+--		shoot1<= '0';
+--		shoot2<= '1';
+--	else 
+--		shoot1<= '0';
+--		shoot2<= '0';
+--	end if;
+--	end process;
