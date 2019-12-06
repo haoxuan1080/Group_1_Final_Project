@@ -7,6 +7,9 @@ entity VGA_test is
 	port(
 			CLOCK_50 										: in std_logic;
 			RESET_N											: in std_logic;
+			en													: in std_logic;
+			
+			game_state: in std_logic_vector (1 downto 0);
 			
 			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: IN std_logic_vector (9 downto 0); --INPUT
 	
@@ -44,11 +47,12 @@ signal video_on_int											: std_logic;
 signal VGA_clk_int											: std_logic;
 signal eof													: std_logic;
 --signal T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y : std_logic_vector(9 downto 0);
-signal en: std_logic;
+--signal en: std_logic;
 
 component pixelGenerator is
 		port(
 			clk,  rst_n: in std_logic;
+			game_state: in std_logic_vector (1 downto 0);
 			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 			pixel_row, pixel_column : in std_logic_vector(9 downto 0);
 			red_out, green_out, blue_out : out std_logic_vector(7 downto 0)
@@ -57,11 +61,11 @@ end component pixelGenerator;
 
 begin
 
-	div: freq_div port map (CLOCK_50 , RESET_N, en);
+	
 --------------------------------------------------------------------------------------------
 
 	videoGen : pixelGenerator
-		port map(CLOCK_50 , RESET_N, T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y, pixel_row_int, pixel_column_int, VGA_RED, VGA_GREEN, VGA_BLUE);
+		port map(CLOCK_50 , RESET_N, game_state, T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y, pixel_row_int, pixel_column_int, VGA_RED, VGA_GREEN, VGA_BLUE);
 		
 --------------------------------------------------------------------------------------------
 --This section should not be modified in your design.  This section handles the VGA timing signals

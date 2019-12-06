@@ -3,7 +3,7 @@ use work.game_constant.all;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity bullet is
+entity bullet_2 is
 	port (
 		clk, rst_n, en: in std_logic;
    	shoot: in std_logic;
@@ -12,9 +12,9 @@ entity bullet is
 		Trow_in, Tcol_in: in std_logic_vector (9 downto 0);
 		row_out, col_out: out std_logic_vector (9 downto 0)
 	);
-end bullet;
+end bullet_2;
 
-architecture behavioral of bullet is
+architecture behavioral of bullet_2 is
 	type state is (idle, not_fired, fired);
 	constant speed: unsigned:="0000011010";
 	signal row, col, row_c, col_c: unsigned (9 downto 0);
@@ -52,7 +52,7 @@ begin
 				
 			when fired => 
 				if(en = '1' and pause = '0')then
-					row_c<=row+speed;
+					row_c<=row-speed;
 					col_c<=col;
 					next_state<=fired;
 				end if;

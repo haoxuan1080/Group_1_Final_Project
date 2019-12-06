@@ -81,7 +81,7 @@ begin
 		
 		when others=> 
 --			pause_new <= '1';
-			next_state <= next_state;
+			next_state <= curr_state;
 end case;
 end process;
 end architecture behavioral;

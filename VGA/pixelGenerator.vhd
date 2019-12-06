@@ -7,6 +7,7 @@ use work.game_constant.all;
 entity pixelGenerator is
 	port(
 			clk,  rst_n: in std_logic;
+			game_state: in std_logic_vector (1 downto 0);
 			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 			pixel_row, pixel_column : in std_logic_vector(9 downto 0);
 			red_out, green_out, blue_out : out std_logic_vector(7 downto 0)
@@ -88,9 +89,9 @@ begin
 			colorAddress <= color_white; 
 			
 		elsif (rising_edge(clk)) then
-			if (InTank(pixel_row_int, pixel_column_int, T1x, T1y)) then
+			if (InTank(pixel_row_int, pixel_column_int, T1x, T1y) and game_state /="10" ) then
 				colorAddress<=color_magenta;
-			elsif(InTank(pixel_row_int, pixel_column_int, T2x, T2y)) then
+			elsif(InTank(pixel_row_int, pixel_column_int, T2x, T2y) and game_state /="01") then
 				colorAddress<=color_cyan;
 			elsif(InBullet(pixel_row_int, pixel_column_int, B1x, B1y)) then
 				colorAddress<=color_yellow;
