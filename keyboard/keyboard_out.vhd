@@ -137,10 +137,10 @@ begin
 					sh1_tr<='1';
 					sh2_tr<='0';
 				elsif scan_code=shoot2 then
-					sp1_tr<='1';
+					sp1_tr<='0';
 					sp2_tr<='0';
 					sh1_tr<='0';
-					sh2_tr<='0';
+					sh2_tr<='1';
 				end if;
                         else
                                 sp1_tr<='0';

@@ -48,7 +48,7 @@ begin
 		scan2<='0';
 		wait for 26 ns;
 		--wait until rising_edge(clk);
-		scan_code<=x"1C";
+		scan_code<=x"42";
 		wait until rising_edge(clk);
 		scan2<='1';
 		wait for 20 ns;
