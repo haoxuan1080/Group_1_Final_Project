@@ -78,7 +78,7 @@ begin
 			
 		when move1 =>
 		if(enable = '1' and pause = '0')then
-			x_new <= unsigned(signed(x_reg) + signed(dir) * speed1;
+			x_new <= signed(x_reg) + signed(dir) * speed1;
 		end if;
 			if ((x_reg >= (Screen_Width - Tank_Width/2)) and (dir = pos_dir)) then
 				dir_new <= neg_dir;

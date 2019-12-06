@@ -185,18 +185,13 @@ lcd_disp: de2lcd port map(reset, clock, game_state, LCD_RS, LCD_E, LCD_ON, RESET
 
 x_t2 <= std_logic_vector(x_t2_unsigned);
 y_t2 <= std_logic_vector(y_t2_unsigned);
---x_b2 <= std_logic_vector(x_b2_unsigned);
---y_b2 <= std_logic_vector(y_b2_unsigned);
 
 tank2_position: process(x_t2_std, y_t2_std)
 begin	
 	x_t2_unsigned <= to_unsigned(Screen_Width - to_integer(unsigned(x_t2_std)),x_t2_unsigned'length);
 	y_t2_unsigned <= to_unsigned(Screen_Height - to_integer(unsigned(y_t2_std)),y_t2_unsigned'length);
---	x_b2_unsigned <= unsigned(x_b2_std);
---	y_b2_unsigned <= to_unsigned(480 - to_integer(unsigned(y_b2_std)),y_b2_unsigned'length);
+
 end process;
-
-
 
 end architecture structual;
 
