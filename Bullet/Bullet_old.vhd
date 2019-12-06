@@ -6,7 +6,7 @@ use IEEE.numeric_std.all;
 entity bullet is
 	port (
 		clk, rst_n, en: in std_logic;
-   	shoot: in std_logic;
+   		shoot: in std_logic;
 		collision: in std_logic;
 		pause: in std_logic;
 		Trow_in, Tcol_in: in std_logic_vector (9 downto 0);
@@ -26,53 +26,47 @@ begin
 	syn_proc: process (clk, rst_n)
 	begin
 		if (rst_n='0') then
-			row<= (others => '0');
-			col<= (others => '0');
+			row<=unsigned(Trow_in);
+			col<=unsigned(Tcol_in);
 			curr_state<=idle;
-		elsif (rising_edge(clk)) then
+		elsif (rising_edge(clk) and en='1') then
+			--if(en='1') then
 				row<=row_c;
 				col<=col_c;
 				curr_state<=next_state;
+			--end if;
 		end if;
 	end process;
 
-	asyn_proc: process (Trow_in, Tcol_in, en, collision, shoot, curr_state, row, col, pause)
+	asyn_proc: process (Trow_in, Tcol_in, collision, shoot, curr_state, row, col)
 	begin
-		row_c <= row;
-		col_c<= col;
-		next_state <= curr_state;
 		case curr_state is
 			when idle =>
 				row_c<=unsigned(Trow_in);
 				col_c<=unsigned(Tcol_in);
-				if(shoot='1' and pause = '0')  then
+				next_state<=not_fired;
+			when not_fired =>
+				row_c<=unsigned(Trow_in);
+				col_c<=unsigned(Tcol_in);
+				next_state<=not_fired;
+				if(shoot='1') then
 					next_state<=fired;
-			
 				end if;
-				
+				if (pause='1') then
+					next_state<=not_fired;
+				end if;
 			when fired => 
-				if(en = '1' and pause = '0')then
-					row_c<=row+speed;
-					col_c<=col;
-					next_state<=fired;
-					if(row>=Screen_Height or collision='1') then
-						next_state<=idle;
-						row_c<=unsigned(Trow_in);
-						col_c<=unsigned(Tcol_in);
-					end if;
+				row_c<=row+speed;
+				col_c<=col;
+				next_state<=fired;
+				if(row>=Screen_Height or collision='1') then
+					next_state<=not_fired;
 				end if;
-			
-			when others =>
-				next_state<=idle;
-				row_c <= (others=> 'X');
-				col_c <= (others=> 'X');
+				if (pause='1') then
+					next_state<=not_fired;
+				end if;
 		end case;
 	end process;
 end behavioral;
 
 
---				next_state<=not_fired;
---			when not_fired =>
---				row_c<=unsigned(Trow_in);
---				col_c<=unsigned(Tcol_in);
---				next_state<=not_fired;

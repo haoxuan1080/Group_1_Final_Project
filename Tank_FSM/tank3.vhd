@@ -27,9 +27,9 @@ signal curr_state, next_state: state_type;
 signal x_reg, x_new :unsigned(9 downto 0);
 signal y_reg, y_new : unsigned(9 downto 0);  
 
-constant speed1: integer := "1";	
-constant speed2: integer := "10";
-constant speed3: integer := "100";	  
+constant speed1: unsigned := "1";	
+constant speed2: unsigned := "10";
+constant speed3: unsigned := "100";	  
 
 begin 
 x <= std_logic_vector(x_reg);
@@ -43,11 +43,11 @@ begin
 			y_reg <= to_unsigned(Tank_Hight/2 ,y_reg'length); 
 			
 		elsif(rising_edge(clock))then
-			if(ENABLE = '1')then
+--			if(ENABLE = '1')then
 			curr_state <= next_state;
 			x_reg <= x_new;
 			y_reg <= y_new;			
-			end if;
+--			end if;
 		end if;
 end process;
 	
@@ -61,12 +61,12 @@ begin
 	case curr_state is	
 		
 		when low_speed_right =>
---		if(enable = '1')then
 				x_new <= x_reg + speed1;
-				y_new <= y_reg;						
-			if(PAUSE = '1')then
-				next_state <= stop;	
-			elsif ((Speed_up = '1') and (x_reg + speed1 < to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
+				y_new <= y_reg;
+				
+--			if(PAUSE = '1')then
+		if(enable = '1' and pause = '0')then				
+			if ((Speed_up = '1') and (x_reg + speed1 < to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= medium_speed_right;
 			elsif ((Speed_up = '1') and (x_reg + speed1 >= to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= medium_speed_left;
@@ -75,15 +75,18 @@ begin
 			elsif ((Speed_up = '0') and (x_reg + speed1 >= to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= low_speed_left;
 			end if;
---		end if;
+		elsif(PAUSE = '1')then 
+			next_state <= stop;
+		end if;
 			
 		when low_speed_left =>
---		if(enable = '1')then
 				x_new <= x_reg - speed1;
-				y_new <= y_reg;	
-			if(PAUSE = '1')then
-				next_state <= stop;		
-			elsif ((Speed_up = '1') and (x_reg - speed1 > to_unsigned(Tank_Width/2, x_reg'length))) then
+				y_new <= y_reg;
+				
+--			if(PAUSE = '1')then
+--				next_state <= stop;
+		if(enable = '1' and pause = '0')then				
+			if ((Speed_up = '1') and (x_reg - speed1 > to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= medium_speed_left;
 			elsif ((Speed_up = '1') and (x_reg - speed1 <= to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= medium_speed_right;
@@ -92,15 +95,18 @@ begin
 			elsif ((Speed_up = '0') and (x_reg - speed1 <= to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= low_speed_right;
 			end if;
---		end if;
+		elsif(PAUSE = '1')then 
+			next_state <= stop;
+		end if;
 			
 		when medium_speed_right =>
---		if(enable = '1')then	
 				x_new <= x_reg + speed2;
-				y_new <= y_reg;			
-			if(PAUSE = '1')then
-				next_state <= stop;			
-			elsif ((Speed_up = '1') and (x_reg + speed2 < to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
+				y_new <= y_reg;
+				
+--			if(PAUSE = '1')then
+--				next_state <= stop;
+		if(enable = '1' and pause = '0')then				
+			if ((Speed_up = '1') and (x_reg + speed2 < to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= high_speed_right;
 			elsif ((Speed_up = '1') and (x_reg + speed2 >= to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= high_speed_left;
@@ -109,16 +115,19 @@ begin
 			elsif ((Speed_up = '0') and (x_reg + speed2 >= to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= medium_speed_left;
 			end if;
---		end if;
+		elsif(PAUSE = '1')then 
+			next_state <= stop;
+		end if;
 		
 			
 		when medium_speed_left =>
---		if(enable = '1')then	
 				x_new <= x_reg - speed2;
 				y_new <= y_reg;
-			if(PAUSE = '1')then
-				next_state <= stop;				
-			elsif ((Speed_up = '1') and (x_reg - speed2 > to_unsigned(Tank_Width/2, x_reg'length))) then
+				
+--			if(PAUSE = '1')then
+--				next_state <= stop;
+		if(enable = '1' and pause = '0')then				
+			if ((Speed_up = '1') and (x_reg - speed2 > to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= high_speed_left;
 			elsif ((Speed_up = '1') and (x_reg - speed2 <= to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= high_speed_right;
@@ -127,17 +136,20 @@ begin
 			elsif ((Speed_up = '0') and (x_reg - speed2 <= to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= medium_speed_right;
 			end if;	
---		end if;
+		elsif(PAUSE = '1')then 
+			next_state <= stop;
+		end if;
 		
 		
 		
 		when high_speed_right =>
---		if(enable = '1')then	
 				x_new <= x_reg + speed3;
 				y_new <= y_reg;
-			if(PAUSE = '1')then
-				next_state <= stop;		
-			elsif ((Speed_up = '1') and (x_reg + speed3 < to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
+				
+--			if(PAUSE = '1')then
+--				next_state <= stop;
+		if(enable = '1' and pause = '0')then		
+			if ((Speed_up = '1') and (x_reg + speed3 < to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= low_speed_right;
 			elsif ((Speed_up = '1') and (x_reg + speed3 >= to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= low_speed_left;
@@ -146,16 +158,19 @@ begin
 			elsif ((Speed_up = '0') and (x_reg + speed3 >= to_unsigned(Screen_Width-Tank_Width/2, x_reg'length))) then
 				next_state <= high_speed_left;
 			end if;
---		end if;
+		elsif(PAUSE = '1')then 
+			next_state <= stop;
+		end if;
 			
 			
 		when high_speed_left =>
---		if(enable = '1')then	
 				x_new <= x_reg - speed3;
 				y_new <= y_reg;
-			if(PAUSE = '1')then
-				next_state <= stop;		
-			elsif ((Speed_up = '1') and (x_reg - speed3 > to_unsigned(Tank_Width/2, x_reg'length))) then
+				
+--			if(PAUSE = '1')then
+--				next_state <= stop;
+		if(enable = '1' and pause = '0')then		
+			if ((Speed_up = '1') and (x_reg - speed3 > to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= low_speed_left;
 			elsif ((Speed_up = '1') and (x_reg - speed3 <= to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= low_speed_right;
@@ -164,9 +179,12 @@ begin
 			elsif ((Speed_up = '0') and (x_reg - speed3 <= to_unsigned(Tank_Width/2, x_reg'length))) then
 				next_state <= high_speed_right;
 			end if;
---		end if;
+		elsif(PAUSE = '1')then 
+			next_state <= stop;
+		end if;
 			
 
+	
 		when stop =>
 			x_new <= x_reg ;
 			y_new <= y_reg ;

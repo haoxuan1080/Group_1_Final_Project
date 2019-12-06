@@ -31,7 +31,7 @@ begin
 		trigger_reg <= '0';
 
 	elsif(rising_edge(clock))then
-		if((((unsigned(x_bullet) - unsigned(x_tank)) < Tank_Width/2) or ((unsigned(x_tank) - unsigned(x_bullet)) < Tank_Width/2)) and (((unsigned(y_bullet) - unsigned(y_tank)) < Tank_Hight/2)or((unsigned(y_tank) - unsigned(y_bullet)) < Tank_Hight/2))) then
+		if((((unsigned(x_bullet) - unsigned(x_tank)) < Tank_Width/2) or ((unsigned(x_tank) - unsigned(x_bullet)) < Tank_Width/2)) and (((unsigned(y_bullet) - unsigned(y_tank)) < Tank_Hight/2)or((unsigned(y_tank) - unsigned(y_bullet)) < Tank_Hight/2))and (trigger_reg <= '0')) then
 			trigger_reg <= '1'; --only one clock?	
 		else 
 			trigger_reg <= '0';

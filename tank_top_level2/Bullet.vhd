@@ -57,6 +57,8 @@ begin
 					next_state<=fired;
 					if(row>=Screen_Height or collision='1') then
 						next_state<=idle;
+						row_c<=unsigned(Trow_in);
+						col_c<=unsigned(Tcol_in);
 					end if;
 				end if;
 			
