@@ -60,11 +60,9 @@ BEGIN
 	
 --sensitive to new clock
 	PROCESS (CLK_400HZ, reset)
-	variable init: std_logic:='0';
 	BEGIN
 		LCD_ON <= '1';
-		IF init = '0' THEN
-			init := '1';
+		IF reset = '0' THEN
 			state <= RESET1;
 			DATA_BUS_VALUE <= X"38";
 			next_command <= RESET2;
