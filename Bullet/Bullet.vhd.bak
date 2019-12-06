@@ -55,13 +55,12 @@ begin
 					row_c<=row+speed;
 					col_c<=col;
 					next_state<=fired;
-				end if;
 					if(row>=Screen_Height or collision='1') then
 						next_state<=idle;
 						row_c<=unsigned(Trow_in);
 						col_c<=unsigned(Tcol_in);
 					end if;
-				
+				end if;
 			
 			when others =>
 				next_state<=idle;

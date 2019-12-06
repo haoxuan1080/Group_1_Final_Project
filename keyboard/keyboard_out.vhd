@@ -113,21 +113,21 @@ begin
 	end process;
 
 	tirgger_proc: process (scan2, reset)
-        begin
-                if (reset='0') then
-                        		sp1_tr<='0';
+   begin
+        if (reset='0') then
+               sp1_tr<='0';
 					sp2_tr<='0';
 					sh1_tr<='0';
 					sh2_tr<='0';
-                elsif(rising_edge(scan2)) then
-                        if (delay_code=x"F0") then
-                               if scan_code=speed1 then
+         elsif(rising_edge(scan2)) then
+				if (delay_code=x"F0") then
+					if scan_code=speed1 then
 					sp1_tr<='1';
 					sp2_tr<='0';
 					sh1_tr<='0';
 					sh2_tr<='0';	
 				elsif scan_code=speed2 then
-                                	sp1_tr<='0';
+               sp1_tr<='0';
 					sp2_tr<='1';
 					sh1_tr<='0';
 					sh2_tr<='0';
@@ -142,8 +142,9 @@ begin
 					sh1_tr<='0';
 					sh2_tr<='1';
 				end if;
-                        else
-                                sp1_tr<='0';
+				
+            else
+            sp1_tr<='0';
 				sp2_tr<='0';
 				sh1_tr<='0';
 				sh2_tr<='0';

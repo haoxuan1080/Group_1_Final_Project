@@ -28,8 +28,8 @@ signal x_reg, x_new :unsigned(9 downto 0);
 signal y_reg, y_new : unsigned(9 downto 0);  
 
 constant speed1: unsigned := "1";	
-constant speed2: unsigned := "10";
-constant speed3: unsigned := "100";	  
+constant speed2: unsigned := "100";
+constant speed3: unsigned := "1000";	  
 
 begin 
 x <= std_logic_vector(x_reg);

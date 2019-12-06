@@ -93,12 +93,12 @@ begin
 			elsif(InTank(pixel_row_int, pixel_column_int, T2x, T2y)) then
 				colorAddress<=color_cyan;
 			elsif(InBullet(pixel_row_int, pixel_column_int, B1x, B1y)) then
-				colorAddress<=color_yellow;
+				colorAddress<=color_black;
 			elsif(InBullet(pixel_row_int, pixel_column_int, B2x, B2y)) then
-				colorAddress<=color_green;
+				colorAddress<=color_white;
 --				colorAddress<=color_black;
 			else
-				colorAddress<=color_black;
+				colorAddress<=color_red;
 			end if;	
 		end if;
 		

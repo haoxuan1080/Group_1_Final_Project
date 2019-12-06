@@ -8,7 +8,7 @@ entity VGA_test is
 			CLOCK_50 										: in std_logic;
 			RESET_N											: in std_logic;
 			
-			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: IN std_logic_vector (9 downto 0); --INPUT
+			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 	
 			--VGA 
 			VGA_RED, VGA_GREEN, VGA_BLUE 					: out std_logic_vector(7 downto 0); 
@@ -43,7 +43,7 @@ signal pixel_column_int 									: std_logic_vector(9 downto 0);
 signal video_on_int											: std_logic;
 signal VGA_clk_int											: std_logic;
 signal eof													: std_logic;
---signal T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y : std_logic_vector(9 downto 0);
+signal T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y : std_logic_vector(9 downto 0);
 signal en: std_logic;
 
 component pixelGenerator is
@@ -62,7 +62,7 @@ begin
 
 	videoGen : pixelGenerator
 		port map(CLOCK_50 , RESET_N, T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y, pixel_row_int, pixel_column_int, VGA_RED, VGA_GREEN, VGA_BLUE);
-		
+
 --------------------------------------------------------------------------------------------
 --This section should not be modified in your design.  This section handles the VGA timing signals
 --and outputs the current row and column.  You will need to redesign the pixelGenerator to choose
