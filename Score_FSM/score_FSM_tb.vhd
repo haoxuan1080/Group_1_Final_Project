@@ -13,16 +13,15 @@ component score_FSM is
 --			ENABLE											: in std_logic;
 			trigger 										: in std_logic;
 			
-			score    									: out std_logic_vector(1 downto 0);		
-			PAUSE    									: out std_logic
+			score    									: out std_logic_vector(1 downto 0)
 	);
 end component score_FSM;
 
-signal clk, rst, trig, stop: std_logic;
+signal clk, rst, trig: std_logic;
 signal num: std_logic_vector(1 downto 0);
 
 begin
-	dut: score_FSM port map (clk, rst, trig, num, stop);
+	dut: score_FSM port map (clk, rst, trig, num);
 	clk_proc: process 
 	begin
 		clk<='0';

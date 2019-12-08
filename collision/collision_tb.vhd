@@ -53,13 +53,26 @@ uut: collision port map(clk, rst, x_t, y_t, x_b, y_b, trig);
 		y_b <= std_logic_vector(to_unsigned(10 ,10)); 
 		x_t <= std_logic_vector(to_unsigned(625 ,10)); 
 		y_t <= std_logic_vector(to_unsigned(470 ,10)); 
-		wait for 100 ns;
+		wait for 20 ns;
+
+		x_b <= std_logic_vector(to_unsigned(50 ,10)); 
+		y_b <= std_logic_vector(to_unsigned(400 ,10)); 
+		x_t <= std_logic_vector(to_unsigned(540 ,10)); 
+		y_t <= std_logic_vector(to_unsigned(400 ,10)); 
+		wait for 20 ns;
+
 		
 		x_b <= std_logic_vector(to_unsigned(140 ,10)); 
-		y_b <= std_logic_vector(to_unsigned(470 ,10)); 
+		y_b <= std_logic_vector(to_unsigned(300 ,10)); 
 		x_t <= std_logic_vector(to_unsigned(150 ,10)); 
-		y_t <= std_logic_vector(to_unsigned(470 ,10)); 
-		wait for 10 ns;
+		y_t <= std_logic_vector(to_unsigned(300 ,10)); 
+		wait for 20 ns;
+
+		x_b <= std_logic_vector(to_unsigned(300 ,10)); 
+		y_b <= std_logic_vector(to_unsigned(10 ,10)); 
+		x_t <= std_logic_vector(to_unsigned(450 ,10)); 
+		y_t <= std_logic_vector(to_unsigned(50 ,10)); 
+		wait for 20 ns;
 	end process;
 
 end architecture structural;

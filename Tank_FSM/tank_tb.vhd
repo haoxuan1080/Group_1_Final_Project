@@ -55,7 +55,7 @@ begin
 	pause_proc: process
 	begin
 		stop<='0';
-		wait for 1000 ns;
+		wait for 16000 ns;
 		stop<='1';
 		wait;
 	end process;
@@ -63,19 +63,25 @@ begin
 	speed_proc: process
 	begin
 		speed<='0';
+		wait for 210 ns;
+		speed<='1';
+		wait for 10 ns;
+		speed<='0';
+		wait for 110 ns;
+		speed<='1';
+		wait for 10 ns;
+		speed<='0';
 		wait for 200 ns;
 		speed<='1';
 		wait for 10 ns;
 		speed<='0';
-		wait for 55 ns;
+		wait for 700 ns;
 		speed<='1';
 		wait for 10 ns;
 		speed<='0';
-		wait for 120 ns;
-		speed<='1';
-		wait for 100 ns;
-		speed<='0';
 		wait;
+
+
 	end process;
 -- wait until? 
 end structural;
