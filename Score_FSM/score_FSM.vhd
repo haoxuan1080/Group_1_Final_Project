@@ -20,68 +20,69 @@ end entity score_FSM;
 		
 architecture behavioral of score_FSM is
 
---type state_type is(score_0, score_1, score_2, score_3 );
---signal curr_state, next_state: state_type;
+type state_type is(score_0, score_1, score_2, score_3 );
+signal curr_state, next_state: state_type;
 
-signal curr_state, next_state: std_logic_vector(1 downto 0);	
---signal pause_reg,pause_new: std_logic;
+signal score_reg, score_new: std_logic_vector(1 downto 0);	
+
 begin
 
-score <= curr_state;
---pause <= pause_reg;
+score <= score_reg;
+
 
 sequ_proc: process(RESET, clock) is
 begin
 		if(RESET = '0') then
-			curr_state <= "00";
---			pause_reg <= '0';
+			curr_state <= score_0;
+			score_reg <= "00";
 		
 		elsif(rising_edge(clock))then
---			if(enable = '1')then
 			curr_state <= next_state;
---			pause_reg <= pause_new;
---			end if;
+			score_reg <= score_new;
 		end if;
 		
 end process;
 	
 combinational : process(curr_state, trigger) is
 begin
-	next_state <= "00";
---	pause_new <= '0';
+	next_state <= score_0;
+	score_new <= "00";
 
 	case curr_state is	
-		when "00" =>
---			pause_new <= '0';
+		when score_0 =>
 			if (trigger = '1')then
-				next_state <= "01";
+				next_state <= score_1;
+				score_new <= "01";
 			else 
 				next_state <= curr_state;
+				score_new <= score_reg;
 			end if;
 		
-		when "01" => 
---			pause_new <= '0';
+		when score_1 => 
 			if (trigger = '1')then
-				next_state <= "10";
+				next_state <= score_2;
+				score_new <= "10";
 			else 
 				next_state <= curr_state;
+				score_new <= score_reg;
 			end if;
 
-		when "10" => 
---			pause_new <= '0';
+		when score_2 => 
 			if (trigger = '1')then
-				next_state <= "11";
+				next_state <= score_3;
+				score_new <= "11";
 			else 
 				next_state <= curr_state;
+				score_new <= score_reg;
 			end if;
 
-		when "11" => 
---			pause_new <= '1';
+		when score_3 => 
 			next_state <= curr_state;
+			score_new <= score_reg;
 		
 		when others=> 
---			pause_new <= '1';
 			next_state <= curr_state;
+			score_new <= score_reg;
 end case;
 end process;
 end architecture behavioral;

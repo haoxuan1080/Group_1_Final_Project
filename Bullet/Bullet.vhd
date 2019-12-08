@@ -15,7 +15,7 @@ entity bullet is
 end bullet;
 
 architecture behavioral of bullet is
-	type state is (idle, not_fired, fired);
+	type state is (idle, fired);
 	constant speed: unsigned:="0000011010";
 	signal row, col, row_c, col_c: unsigned (9 downto 0);
 	signal curr_state, next_state: state;

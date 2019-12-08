@@ -7,7 +7,7 @@ entity VGA_test is
 	port(
 			CLOCK_50 										: in std_logic;
 			RESET_N											: in std_logic;
-			en													: in std_logic;
+--			en													: in std_logic;
 			
 			game_state: in std_logic_vector (1 downto 0);
 			

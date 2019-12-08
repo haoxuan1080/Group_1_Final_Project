@@ -102,7 +102,7 @@ component VGA_test is
 	port(
 			CLOCK_50 										: in std_logic;
 			RESET_N											: in std_logic;
-			en													: in std_logic;
+--			en													: in std_logic;
 			
 			game_state: in std_logic_vector (1 downto 0);
 			
@@ -178,7 +178,7 @@ collision_hit1: collision port map(clock, reset, x_t1, y_t1, x_b2, y_b2, trig2);
 score_1: score_FSM port map(clock, reset, trig1, score1);
 score_2: score_FSM port map(clock, reset, trig2, score2);
 winner: WinDec port map(clock, reset, score1, score2, pause, game_state);
-VGA_disp: VGA_test port map(clock, reset, enable, game_state, x_t1, y_t1, x_t2, y_t2, x_b1, y_b1, x_b2, y_b2, VGA_RED, VGA_GREEN, VGA_BLUE, HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK );
+VGA_disp: VGA_test port map(clock, reset, game_state, x_t1, y_t1, x_t2, y_t2, x_b1, y_b1, x_b2, y_b2, VGA_RED, VGA_GREEN, VGA_BLUE, HORIZ_SYNC, VERT_SYNC, VGA_BLANK, VGA_CLK );
 led_disp1: leddcd port map(("00" & score1), HEX7); -- bit of score
 led_disp2: leddcd port map(("00" & score2), HEX0); -- bit of score
 lcd_disp: de2lcd port map(reset, clock, game_state, LCD_RS, LCD_E, LCD_ON, RESET_LED, SEC_LED, LCD_RW, DATA_BUS);
