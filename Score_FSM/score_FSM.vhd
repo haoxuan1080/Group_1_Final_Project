@@ -39,14 +39,15 @@ begin
 		elsif(rising_edge(clock))then
 			curr_state <= next_state;
 			score_reg <= score_new;
+		
 		end if;
 		
 end process;
 	
-combinational : process(curr_state, trigger) is
+combinational : process(curr_state, trigger,score_reg ) is
 begin
-	next_state <= score_0;
-	score_new <= "00";
+--	next_state <= score_0;
+--	score_new <= "00";
 
 	case curr_state is	
 		when score_0 =>
@@ -80,9 +81,10 @@ begin
 			next_state <= curr_state;
 			score_new <= score_reg;
 		
-		when others=> 
-			next_state <= curr_state;
-			score_new <= score_reg;
+		
+--		when others=> 
+--			next_state <= curr_state;
+--			score_new <= score_reg;
 end case;
 end process;
 end architecture behavioral;
