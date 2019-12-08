@@ -10,7 +10,8 @@ entity pixelGenerator is
 			game_state: in std_logic_vector (1 downto 0);
 			T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 			pixel_row, pixel_column : in std_logic_vector(9 downto 0);
-			red_out, green_out, blue_out : out std_logic_vector(7 downto 0)
+			color_addr: out std_logic_vector (2 downto 0)
+			--red_out, green_out, blue_out : out std_logic_vector(7 downto 0)
 		);
 end entity pixelGenerator;
 
@@ -36,7 +37,7 @@ end component colorDecoder;
 
 signal pixel_row_int, pixel_column_int 				: natural;
 signal colorAddress : std_logic_vector (2 downto 0);
-signal color        : std_logic_vector (23 downto 0);
+--signal color        : std_logic_vector (23 downto 0);
 
 function InTank (row_int: integer; col_int: integer; T_x: std_logic_vector; T_y: std_logic_vector) return boolean is
 	variable IsTank: boolean;
@@ -67,18 +68,18 @@ begin
 
 --------------------------------------------------------------------------------------------
 	
-	red_out <= color(23 downto 16);
-	green_out <= color(15 downto 8);
-	blue_out <= color(7 downto 0);
-
+	--red_out <= color(23 downto 16);
+	--green_out <= color(15 downto 8);
+	--blue_out <= color(7 downto 0);
+	color_addr<=colorAddress;
 
 	pixel_row_int <= to_integer(unsigned(pixel_row));
 	pixel_column_int <= to_integer(unsigned(pixel_column));
 	
 --------------------------------------------------------------------------------------------	
 
-	colors : colorDecoder
-		port map(colorAddress, color);
+	--colors : colorDecoder
+		--port map(colorAddress, color);
 --------------------------------------------------------------------------------------------	
 
 	pixelDraw : process(clk, rst_n) is
@@ -93,9 +94,9 @@ begin
 				colorAddress<=color_magenta;
 			elsif(InTank(pixel_row_int, pixel_column_int, T2x, T2y) and game_state /="01") then
 				colorAddress<=color_cyan;
-			elsif(InBullet(pixel_row_int, pixel_column_int, B1x, B1y)) then
+			elsif(InBullet(pixel_row_int, pixel_column_int, B1x, B1y)and game_state /="10" ) then
 				colorAddress<=color_yellow;
-			elsif(InBullet(pixel_row_int, pixel_column_int, B2x, B2y)) then
+			elsif(InBullet(pixel_row_int, pixel_column_int, B2x, B2y)and game_state /="01" ) then
 				colorAddress<=color_green;
 			else
 				colorAddress<=color_black;

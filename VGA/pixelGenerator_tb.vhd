@@ -10,15 +10,26 @@ architecture structural of pixelGenerator_tb is
 	component pixelGenerator is
 	port(
 		clk, rst_n: in std_logic;
+		game_state: in std_logic_vector (1 downto 0);
 		T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y: std_logic_vector (9 downto 0);
 		pixel_row, pixel_column : in std_logic_vector(9 downto 0);
-		red_out, green_out, blue_out : out std_logic_vector(7 downto 0)
+		color_addr: out std_logic_vector (2 downto 0)
+		--red_out, green_out, blue_out : out std_logic_vector(7 downto 0)
 	);
-end component pixelGenerator;
+	end component pixelGenerator;
+	component colorDecoder is
+	port
+	(
+		address		: in std_logic_vector (2 downto 0);
+		q			: out std_logic_vector (23 downto 0)
+	);
+	end component colorDecoder;
 	signal clk,  rst_n : std_logic;
 	signal row, col, T1x, T1y, T2x, T2y,B1x,B1y, B2x, B2y: std_logic_vector (9 downto 0);
 	signal red_out, green_out, blue_out: std_logic_vector (7 downto 0);
+	SIGNAL COLOR_ADDR: STD_LOGIC_VECTOR(2 DOWNTO 0);	
 	constant color_red 	 	 : std_logic_vector(2 downto 0) := "000";
+	SIGNAL COLOR: STD_LOGIC_VECTOR (23 DOWNTO 0);
 	constant color_green	 : std_logic_vector(2 downto 0) := "001";
 	constant color_blue 	 : std_logic_vector(2 downto 0) := "010";
 	constant color_yellow 	 : std_logic_vector(2 downto 0) := "011";
@@ -30,10 +41,16 @@ begin
 	dut: pixelGenerator
         port map(
                 clk, rst_n,
+		"00",
                 T1x, T1y, T2x, T2y, B1x, B1y, B2x, B2y,
                 row, col,
-                red_out, green_out, blue_out);
-
+		cOLOR_ADDR);
+                --red_out, green_out, blue_out);
+	colors : colorDecoder
+		port map(color_Addr, color);
+	red_out <= color(23 downto 16);
+	green_out <= color(15 downto 8);
+	blue_out <= color(7 downto 0);
 	clk_proc: process
 	begin
 		clk<='0';
